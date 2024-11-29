@@ -16,4 +16,12 @@ public class ProdutoService {
     public List<Produto> findAll() {
         return this.fakeDb;
     }
+
+    public void removerEstoque(final Long produtoId, final BigDecimal quantidade) {
+        fakeDb.stream()
+                .filter(produto -> produto.getId().equals(produtoId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Produto nao encontrado"))
+                .removerEstoque(quantidade);
+    }
 }
