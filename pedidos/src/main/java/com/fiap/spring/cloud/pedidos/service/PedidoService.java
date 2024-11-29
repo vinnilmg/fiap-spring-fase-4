@@ -13,4 +13,8 @@ public class PedidoService {
     public List<Pedido> findAll() {
         return this.fakeDb;
     }
+
+    public void save(final Pedido pedido) {
+        fakeDb.add(pedido);
+    }
 }
