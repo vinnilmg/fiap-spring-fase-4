@@ -21,8 +21,8 @@ public class ProdutoConsumer {
     @Bean(name = "remove-estoque")
     Consumer<ProdutoRequest> consumer() {
         return produtoRequest -> service.removerEstoque(
-                produtoRequest.id(),
-                produtoRequest.quantity()
+                produtoRequest.getId(),
+                produtoRequest.getQuantidade()
         );
     }
 }
