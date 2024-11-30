@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/estoque")
+@RequestMapping
 public class ProdutoController {
     private final ProdutoService produtoService;
 
@@ -18,7 +18,7 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-    @GetMapping
+    @GetMapping("get-all")
     public ResponseEntity<List<Produto>> findAll() {
         return ResponseEntity.ok(produtoService.findAll());
     }
