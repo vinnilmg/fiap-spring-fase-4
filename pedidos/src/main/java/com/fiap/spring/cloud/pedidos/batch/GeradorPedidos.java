@@ -27,7 +27,7 @@ public class GeradorPedidos {
         service.save(new Pedido(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                List.of(new Item(1L, 1L, new BigDecimal(2)))
+                List.of(new Item(1L, 1L, new BigDecimal(5)))
         ));
     }
 }
