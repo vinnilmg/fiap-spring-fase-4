@@ -23,11 +23,10 @@ public class GeradorPedidos {
 
     @Scheduled(fixedDelay = 10, timeUnit = TimeUnit.SECONDS)
     public void gerarPedidos() {
-        // log.info("Incluindo novo pedido");
         service.save(new Pedido(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                List.of(new Item(1L, 1L, new BigDecimal(5)))
+                List.of(new Item(1L, new BigDecimal(5)))
         ));
     }
 }

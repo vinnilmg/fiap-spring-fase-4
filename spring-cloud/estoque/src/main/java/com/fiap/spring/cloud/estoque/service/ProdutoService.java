@@ -20,8 +20,10 @@ public class ProdutoService {
     }
 
     public void removerEstoque(final Long produtoId, final BigDecimal quantidade) {
-        repository.findById(produtoId)
-                .orElseThrow(() -> new IllegalArgumentException("Produto nao encontrado"))
-                .removerEstoque(quantidade);
+        final var produto = repository.findById(produtoId)
+                .orElseThrow(() -> new IllegalArgumentException("Produto nao encontrado"));
+
+        produto.removerEstoque(quantidade);
+        repository.save(produto);
     }
 }
