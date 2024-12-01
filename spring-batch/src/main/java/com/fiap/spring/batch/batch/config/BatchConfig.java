@@ -10,12 +10,16 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class BatchConfig {
@@ -37,7 +41,7 @@ public class BatchConfig {
             ItemProcessor<Person, Person> processor
     ) {
         return new StepBuilder("step", jobRepository)
-                .<Person, Person>chunk(20, platformTransactionManager)
+                .<Person, Person>chunk(20, platformTransactionManager) // Qtd de registros que vai pegar em cada execução
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -55,16 +59,24 @@ public class BatchConfig {
                 .delimited()
                 .names("name", "streetName", "number", "city", "country", "email", "phoneNumber") // Nome das colunas do arquivo
                 .fieldSetMapper(mapper)
+                .linesToSkip(1) // Pula a primeira linha do header
                 .build();
     }
 
     @Bean
-    public ItemWriter<Person> writer() {
-        return null;
+    public ItemWriter<Person> writer(DataSource dataSource) {
+        return new JdbcBatchItemWriterBuilder<Person>()
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+                .dataSource(dataSource)
+                .sql("""
+                        INSERT INTO person (name, street_name, number, city, country, email, phone_number, create_date_time)
+                        VALUES (:name, :streetName, :number, :city, :country, :email, :phoneNumber, :createDateTime)
+                        """)
+                .build();
     }
 
     @Bean
     public ItemProcessor<Person, Person> processor() {
-        return null;
+        return new PersonProcessor();
     }
 }

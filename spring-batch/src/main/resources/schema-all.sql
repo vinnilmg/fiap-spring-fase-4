@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS person;
 CREATE TABLE person
 (
     id                  serial,
-    nome                varchar(240),
+    name                varchar(240),
     street_name         varchar(240),
     number              varchar(240),
     city                varchar(240),
