@@ -3,15 +3,22 @@ package com.fiap.spring.cloud.estoque.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Document
 public class Produto {
+
+    @MongoId
     private Long id;
+
     private String nome;
+
     private BigDecimal quantidade;
 
     public void removerEstoque(final BigDecimal quantidade) {
